@@ -1,4 +1,4 @@
-import { Dimensions, PixelRatio } from 'react-native';
+import { Dimensions, PixelRatio, Platform } from 'react-native';
 
 export const AppColors = {
   white: 'white',
@@ -21,6 +21,22 @@ const cacheMap = new Map();
 const { width: deviceScreenWidth, height: deviceScreenHeight } = Dimensions.get(
   'window'
 );
+
+/**
+ * @method isIphoneX: Return true if device is Iphone X.
+ */
+export const isIphoneX = () => {
+  const dimen = Dimensions.get('window');
+  return (
+    Platform.OS === 'ios' &&
+    !Platform.isPad &&
+    !Platform.isTVOS &&
+    (dimen.height === 812 ||
+      dimen.width === 812 ||
+      dimen.height === 896 ||
+      dimen.width === 896)
+  );
+};
 
 export const getWidth = function getWidth(imgWidth: number) {
   if (cacheMap.has(`w${imgWidth}`)) {

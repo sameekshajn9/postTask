@@ -1,4 +1,10 @@
-import { dimensionScreen, AppColors, getHeight, getWidth } from '../../theme';
+import {
+  dimensionScreen,
+  AppColors,
+  getHeight,
+  getWidth,
+  isIphoneX
+} from '../../theme';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -42,7 +48,7 @@ export const styles = StyleSheet.create({
     width: getHeight(60),
     borderRadius: getHeight(30),
     position: 'absolute',
-    bottom: getHeight(40),
+    bottom: isIphoneX() ? getHeight(60) : getHeight(40),
     right: getWidth(20),
     elevation: 8,
     shadowOffset: {

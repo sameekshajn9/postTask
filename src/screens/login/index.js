@@ -6,7 +6,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Image
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
 import { loginUser } from '../../store/actions';
@@ -25,75 +27,84 @@ class Login extends Component {
     const { userName, password } = this.state;
     return (
       <SafeAreaView>
-        <View style={styles.parentWrapper}>
-          <Image
-            source={require('../../../assets/background.png')}
-            style={{
-              position: 'absolute',
-              flex: 1,
-              zIndex: -1
-            }}
-            resizeMode={'center'}
-          />
-          <View style={styles.LoginCard}>
-            <View style={styles.addDetailWrapper}>
-              <Text style={styles.labelText}>USERNAME</Text>
-              <TextInput
-                value={userName}
-                onChangeText={value => this.setState({ userName: value })}
-                placeholder={'user0'}
-                style={styles.textInputWrapper}
-              />
-              <View style={styles.inputLine} />
-            </View>
-            <View style={styles.addDetailWrapper}>
-              <Text style={styles.labelText}>PASSWORD</Text>
-              <TextInput
-                value={password}
-                secureTextEntry={true}
-                placeholder={'P@ssword0'}
-                style={styles.textInputWrapper}
-                onChangeText={value => this.setState({ password: value })}
-              />
-              <View style={styles.inputLine} />
-            </View>
-            <Text
-              style={[
-                styles.labelText,
-                { fontSize: 10, alignSelf: 'center', marginTop: getHeight(20) }
-              ]}
-            >
-              FORGOT YOUR PASSWORD?{' '}
-            </Text>
-            <TouchableOpacity onPress={this.handleOnButtonClick}>
-              <View style={styles.loginButton}>
-                <Text style={styles.buttonText}>LOGIN</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.parentWrapper}>
+            <Image
+              source={require('../../../assets/background.png')}
+              style={{
+                position: 'absolute',
+                flex: 1,
+                zIndex: -1
+              }}
+              resizeMode={'center'}
+            />
+            <View style={styles.LoginCard}>
+              <View style={styles.addDetailWrapper}>
+                <Text style={styles.labelText}>USERNAME</Text>
+                <View style={{ flex: 1 }}>
+                  <TextInput
+                    value={userName}
+                    onChangeText={value => this.setState({ userName: value })}
+                    placeholder={'user0'}
+                    style={styles.textInputWrapper}
+                  />
+                </View>
+                <View style={styles.inputLine} />
               </View>
-            </TouchableOpacity>
-            <View style={styles.connectWithWrapper}>
-              <View style={styles.lineView} />
-              <Text style={{ fontSize: 10, color: '#737273' }}>
-                {' '}
-                OR CONNECT WITH{' '}
+              <View style={styles.addDetailWrapper}>
+                <Text style={styles.labelText}>PASSWORD</Text>
+                <TextInput
+                  value={password}
+                  secureTextEntry={true}
+                  placeholder={'P@ssword0'}
+                  style={styles.textInputWrapper}
+                  onChangeText={value => this.setState({ password: value })}
+                />
+                <View style={styles.inputLine} />
+              </View>
+              <Text
+                style={[
+                  styles.labelText,
+                  {
+                    fontSize: 10,
+                    alignSelf: 'center',
+                    marginTop: getHeight(20)
+                  }
+                ]}
+              >
+                FORGOT YOUR PASSWORD?{' '}
               </Text>
-              <View style={styles.lineView} />
-            </View>
-            <View style={styles.signMethods}>
-              <TouchableOpacity>
-                <Image
-                  source={require('../../../assets/facebook.png')}
-                  style={{ height: 45, width: 45 }}
-                />
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={this.handleOnButtonClick}
+              >
+                <Text style={styles.buttonText}>LOGIN</Text>
               </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  source={require('../../../assets/google.png')}
-                  style={{ height: 45, width: 45, marginLeft: 10 }}
-                />
-              </TouchableOpacity>
+              <View style={styles.connectWithWrapper}>
+                <View style={styles.lineView} />
+                <Text style={{ fontSize: 10, color: '#737273' }}>
+                  {' '}
+                  OR CONNECT WITH{' '}
+                </Text>
+                <View style={styles.lineView} />
+              </View>
+              <View style={styles.signMethods}>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../../../assets/facebook.png')}
+                    style={{ height: 45, width: 45 }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../../../assets/google.png')}
+                    style={{ height: 45, width: 45, marginLeft: 10 }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     );
   }

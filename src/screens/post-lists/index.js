@@ -6,7 +6,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  FlatList
+  FlatList,
+  Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import { addPost, upvote, logout } from '../../store/actions';
@@ -19,9 +20,38 @@ class PostList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showAddPost: false
+      showAddPost: false,
+      keyboardState: ''
     };
   }
+
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({
+      keyboardState: 'opened'
+    });
+  };
+
+  _keyboardDidHide = () => {
+    this.setState({
+      keyboardState: 'closed'
+    });
+  };
 
   renderPost = item => {
     const { user, upvotePost } = this.props;
@@ -69,6 +99,17 @@ class PostList extends Component {
     );
   };
 
+  closePopup = () => {
+    const { keyboardState } = this.state;
+    if (keyboardState === 'opened') {
+      Keyboard.dismiss();
+      return;
+    }
+    this.setState({
+      showAddPost: false
+    });
+  };
+
   render() {
     const { showAddPost } = this.state;
     const { navigation, allPosts, logout } = this.props;
@@ -100,6 +141,7 @@ class PostList extends Component {
             data={allPosts}
             renderItem={({ item }) => this.renderPost(item)}
           />
+          <View style={{ height: 50 }} />
           <TouchableOpacity
             style={styles.addWrapper}
             onPress={() => this.setState({ showAddPost: true })}
@@ -112,7 +154,7 @@ class PostList extends Component {
         </View>
         {showAddPost && (
           <AddPost
-            closeAddPost={() => this.setState({ showAddPost: false })}
+            closeAddPost={this.closePopup}
             postContent={text => this.handleAddPost(text)}
           />
         )}
@@ -129,6 +171,7 @@ class PostList extends Component {
       postedBy: 'user1'
     };
     addPost(postData);
+    this.setState({ showAddPost: false });
   };
 }
 
