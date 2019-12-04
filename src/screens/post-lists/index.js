@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Keyboard
+  Keyboard,
+  ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { addPost, upvote, logout } from '../../store/actions';
@@ -53,9 +54,20 @@ class PostList extends Component {
     });
   };
 
+  hasVotes = item => {
+    const { user } = this.props;
+    if (item && item.votes && item.votes.length > 0) {
+      const hasvoted = item.votes.findIndex(
+        vote => vote.votedby.toLowerCase() === user.toLowerCase()
+      );
+      return hasvoted;
+    }
+    return -1;
+  };
+
   renderPost = item => {
     const { user, upvotePost } = this.props;
-    const index = item.votes.findIndex(vote => vote.votedby === user);
+    const index = this.hasVotes(item);
     const likedIcon =
       index > -1
         ? require('../../../assets/thumbs-up.png')
@@ -114,7 +126,7 @@ class PostList extends Component {
     const { showAddPost } = this.state;
     const { navigation, allPosts, logout } = this.props;
     const backIcon = require('../../../assets/IconBack1.png');
-
+    console.log(allPosts);
     return (
       <SafeAreaView>
         <View style={styles.parentWrapper}>
@@ -137,11 +149,14 @@ class PostList extends Component {
               </TouchableOpacity>
             }
           />
-          <FlatList
+          <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+            {allPosts && allPosts.map(item => this.renderPost(item))}
+          </ScrollView>
+          {/* <FlatList
             data={allPosts}
             renderItem={({ item }) => this.renderPost(item)}
-          />
-          <View style={{ height: 50 }} />
+          /> */}
+          {/* <View style={{ height: 30 }} /> */}
           <TouchableOpacity
             style={styles.addWrapper}
             onPress={() => this.setState({ showAddPost: true })}
@@ -163,12 +178,12 @@ class PostList extends Component {
   }
 
   handleAddPost = text => {
-    const { addPost } = this.props;
+    const { addPost, user } = this.props;
     const postData = {
       text,
       createdAt: moment(),
       votes: [],
-      postedBy: 'user1'
+      postedBy: user
     };
     addPost(postData);
     this.setState({ showAddPost: false });

@@ -77,9 +77,11 @@ const postReducer = (state = defaultState, action) => {
       const allPosts = [...state.posts];
       const index = allPosts.findIndex(p => p.postId === postId);
 
-      if (index > -1) {
+      if (index > -1 && userName) {
         const votes = allPosts[index].votes;
-        const indexVote = votes.findIndex(p => p.votedby === userName);
+        const indexVote = votes.findIndex(
+          p => p.votedby.toLowerCase() === userName.toLowerCase()
+        );
         let updatedVotes = [];
         if (indexVote > -1) {
           votes.splice(indexVote, 1);

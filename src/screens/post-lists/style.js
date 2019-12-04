@@ -61,5 +61,8 @@ export const styles = StyleSheet.create({
     height: getHeight(80),
     width: getWidth(20),
     tintColor: 'white'
+  },
+  contentContainerStyle: {
+    paddingBottom: isIphoneX() ? getHeight(110) : getHeight(90)
   }
 });
