@@ -1,6 +1,6 @@
-const user = require('./user');
-const task = require('./task');
-const vote = require('./vote');
+const user = require('./users');
+const task = require('./tasks');
+const vote = require('./votes');
 
 module.exports = app => {
   app.use('/api/users', user);
