@@ -4,11 +4,11 @@ const ObjectID = mongoose.Types.ObjectId;
 
 const createTask = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, date } = req.body;
 
     const data = {
       title,
-      posted_date: new Date().toUTCString(),
+      posted_date: date,
       votes: []
     };
 
@@ -26,7 +26,7 @@ const createTask = async (req, res) => {
   }
 };
 
-const getAllTasks = async (req, res) => {
+const getAllPosts = async (req, res) => {
   try {
     Task.find()
       .populate({
@@ -49,4 +49,4 @@ const getAllTasks = async (req, res) => {
 };
 
 module.exports.createTask = createTask;
-module.exports.getAllTasks = getAllTasks;
+module.exports.getAllPosts = getAllPosts;

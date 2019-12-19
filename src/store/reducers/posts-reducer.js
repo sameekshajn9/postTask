@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { ADD_POST, GET_POSTS, UPVOTE_POST } from '../actions/action-types';
 
 const postArray = [
   {
@@ -60,19 +61,24 @@ const defaultState = {
 
 const postReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case 'ADD_POST': {
+    case ADD_POST: {
       console.log(state, action, 'here');
       const stateArray = [...state.posts];
       const newposts = stateArray.concat({
-        ...action.payload,
-        postId: stateArray.length
+        ...action.payload
+        // postId: stateArray.length
       });
       return {
         ...state,
         posts: newposts
       };
     }
-    case 'UPVOTE_POST': {
+
+    case GET_POSTS: {
+      return action.payload.posts;
+    }
+
+    case UPVOTE_POST: {
       const { postId, userName } = action.payload;
       const allPosts = [...state.posts];
       const index = allPosts.findIndex(p => p.postId === postId);
