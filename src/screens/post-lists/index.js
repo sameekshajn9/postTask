@@ -11,7 +11,7 @@ import {
   ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { addPost, upvote, logout } from '../../store/actions';
+import { addPost, upvote, logout, getAllPosts } from '../../store/actions';
 import Header from '../../shared/header';
 import AddPost from './components/add-post';
 import moment from 'moment';
@@ -35,6 +35,11 @@ class PostList extends Component {
       'keyboardDidHide',
       this._keyboardDidHide
     );
+  }
+
+  componentDidMount() {
+    const { getAllPosts } = this.props;
+    getAllPosts();
   }
 
   componentWillUnmount() {
@@ -203,7 +208,8 @@ const mapActionToProps = dispatch => {
   return {
     addPost: payload => dispatch(addPost(payload)),
     upvotePost: payload => dispatch(upvote(payload)),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    getAllPosts: () => dispatch(getAllPosts())
   };
 };
 
