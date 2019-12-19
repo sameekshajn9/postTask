@@ -7,8 +7,16 @@ const voteTask = async (req, res) => {
     const { id, userId } = req.body;
 
     Vote.findOne({ task: ObjectID(id) })
-      .then(res => {
-          if (res) {
+      .then(async res => {
+        if (res) {
+          const users = res.users;
+          const updatedUsers = users.push(userId);
+          await Vote.updateOne(
+            { task: ObjectID(id) },
+            {
+              $push: { users: updatedUsers }
+            }
+          );
         } else {
           await new Vote({ task: ObjectID(id), users: [userId], count: 0 });
         }

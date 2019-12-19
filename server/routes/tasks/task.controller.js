@@ -28,10 +28,10 @@ const createTask = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
   try {
-    new Task(data)
-      .find()
+    Task.find()
       .populate({
-        path: 'vote'
+        path: 'vote',
+        populate: { path: 'user' }
       })
       .then(res => {
         const allTasks = JSON.parse(JSON.stringify(res));
